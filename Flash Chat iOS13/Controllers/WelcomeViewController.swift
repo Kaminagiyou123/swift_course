@@ -12,10 +12,23 @@ import CLTypingLabel
 class WelcomeViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: CLTypingLabel!
+
+override func viewWillAppear(_ animated: Bool) {
+super.viewWillAppear(animated)
+navigationController?.isToolbarHidden=true
+
+}
+
+override func viewWillDisappear(_ animated: Bool) {
+super.viewWillDisappear(animated)
+navigationController?.isToolbarHidden=false
+
+}
+  
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       self.navigationController?.setToolbarHidden(false, animated: true)
+      
    
     titleLabel.text=K.appName
         titleLabel.charInterval = 0.08
