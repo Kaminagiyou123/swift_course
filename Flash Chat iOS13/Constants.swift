@@ -1,11 +1,19 @@
+//
+//  Constants.swift
+//  Flash Chat iOS13
+//
+//  Created by ran you on 1/31/22.
+//  Copyright © 2022 Angela Yu. All rights reserved.
+//
+
+import Foundation
 
 struct K {
-    
-    static let appName="⚡️FlashChat"
     static let cellIdentifier = "ReusableCell"
     static let cellNibName = "MessageCell"
     static let registerSegue = "RegisterToChat"
     static let loginSegue = "LoginToChat"
+    static let appName="FlashChat"
     
     struct BrandColors {
         static let purple = "BrandPurple"

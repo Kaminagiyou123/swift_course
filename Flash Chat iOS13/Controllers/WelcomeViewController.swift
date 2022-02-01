@@ -12,26 +12,14 @@ import CLTypingLabel
 class WelcomeViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: CLTypingLabel!
-
-override func viewWillAppear(_ animated: Bool) {
-super.viewWillAppear(animated)
-navigationController?.isToolbarHidden=true
-
-}
-
-override func viewWillDisappear(_ animated: Bool) {
-super.viewWillDisappear(animated)
-navigationController?.isToolbarHidden=false
-
-}
-  
+    
+    var label = "⚡️FlashChat"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
-   
-    titleLabel.text=K.appName
-        titleLabel.charInterval = 0.08
+        titleLabel.text=label
+       
     }
+    
 
 }
