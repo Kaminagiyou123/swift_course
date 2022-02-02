@@ -368,6 +368,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="D2w-7A-XoI">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" name="BrandBlue"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -380,7 +381,9 @@
         </scene>
     </scenes>
     <designables>
-        <designable name="y7D-jv-BlJ"/>
+        <designable name="y7D-jv-BlJ">
+            <size key="intrinsicContentSize" width="219" height="42"/>
+        </designable>
     </designables>
     <inferredMetricsTieBreakers>
         <segue reference="K8P-br-EFX"/>

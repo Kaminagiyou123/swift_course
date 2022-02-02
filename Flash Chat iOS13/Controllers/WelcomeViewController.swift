@@ -10,6 +10,9 @@ import UIKit
 import CLTypingLabel
 
 class WelcomeViewController: UIViewController {
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = true
+    }
 
     @IBOutlet weak var titleLabel: CLTypingLabel!
     

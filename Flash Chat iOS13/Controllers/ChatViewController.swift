@@ -8,8 +8,10 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 class ChatViewController: UIViewController {
+    let db = Firestore.firestore()
     
     
     var messages:[Message]=[
@@ -29,10 +31,51 @@ class ChatViewController: UIViewController {
         tableView.dataSource = self
         
         tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
+        
+        loadMessages()
+      
+    }
+    
+    func loadMessages(){
+        
+        db.collection(K.FStore.collectionName).order(by:K.FStore.dateField).addSnapshotListener() { (querySnapshot, err) in
+            self.messages=[]
+            
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    let data=document.data()
+                    self.messages.append(Message(sender: data[K.FStore.senderField] as! String, body: data[K.FStore.bodyField] as! String))
 
+                    DispatchQueue.main.async{
+                        self.tableView.reloadData()
+                        let indexPath = IndexPath(row:self.messages.count-1, section: 0)
+                        self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                    }
+                }
+            }
+        }
+     
+ 
     }
     
     @IBAction func sendPressed(_ sender: UIButton) {
+        if let messageBody = messageTextfield.text, let messageSender = Auth.auth().currentUser?.email {
+            db.collection(K.FStore.collectionName).addDocument(data: [
+                K.FStore.senderField :messageSender,
+                K.FStore.bodyField: messageBody,
+                K.FStore.dateField:Date().timeIntervalSince1970]
+            ) { [self] error in
+                if let  e  = error {print(e)}
+                else {print("successfully saved data")}
+                self.loadMessages()
+                messageTextfield.text=""
+               
+            }
+            
+        }
+        
     }
     
     @IBAction func logoutPressed(_ sender: UIBarButtonItem) {
@@ -57,13 +100,28 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     
     // create a cell for each table view row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        let message = messages[indexPath.row]
+      
         // create a new cell if needed or reuse an old one
         let cell = self.tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier) as! MessageCell
         
         // set the text from the data model
         cell.label?.text = self.messages[indexPath.row].body
         
+        //this is message from current user
+        if  message.sender == Auth.auth().currentUser?.email {
+            cell.leftImageView.isHidden=true
+            cell.rightImageView.isHidden=false
+            cell.messageBubble.backgroundColor=UIColor(named:K.BrandColors.lightPurple)
+            cell.label.textColor=UIColor(named:K.BrandColors.purple)
+            
+        } else {
+            cell.leftImageView.isHidden=false
+            cell.rightImageView.isHidden=true
+            cell.messageBubble.backgroundColor=UIColor(named:K.BrandColors.blue)
+            cell.label.textColor=UIColor(named:K.BrandColors.lightBlue)
+            
+        }
         return cell
     }
     
